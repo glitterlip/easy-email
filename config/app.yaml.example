@@ -1,0 +1,25 @@
+app:
+  secret: "Hi!This is easyemail secret.Please change it manually!"
+  port: 11328
+  basepath: ""
+  env: "prod"
+redis:
+  port: 6379
+  host: "127.0.0.1"
+  password: ""
+  database: 10
+database:
+  dsn: "acc:pwd@tcp(host:3306)/email?charset=utf8mb4&collation=utf8mb4_general_ci&parseTime=true"
+email:
+  from: "livepreview@utuo.top"
+  address: "mail.utuo.top:465"
+  host: "mail.utuo.top"
+  username: ""
+  password: ""
+storage:
+  bucket: "email"
+  region: "auto"
+  accountid: ""
+  accesskey: ""
+  secretkey: ""
+  endpoint: "https://cdn.utuo.top"
