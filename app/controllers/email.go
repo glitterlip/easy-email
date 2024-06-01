@@ -157,3 +157,30 @@ func ToHtml(c echo.Context) error {
 		"html": emailStr,
 	})
 }
+
+func CreateBlock(c echo.Context) error {
+	block := new(models.CustomBlock)
+
+	block.UserId = int64(cast.ToInt(c.Get("id")))
+	m := echo.Map{}
+	c.Bind(&m)
+	if m["meta"] != nil {
+		jsonBytes, _ := json.Marshal(m["meta"])
+		rawMsg := json.RawMessage(jsonBytes)
+		block.Meta = &rawMsg
+	}
+
+	if m["content"] != nil {
+		jsonBytes, _ := json.Marshal(m["content"])
+		rawMsg := json.RawMessage(jsonBytes)
+		block.Content = &rawMsg
+	}
+
+	models.DB.Save(block)
+	return util.Success(c, nil, block)
+}
+func Blocks(c echo.Context) error {
+	var bs []models.CustomBlock
+	models.DB.Model(&models.CustomBlock{}).Where("user_id", c.Get("id")).Get(&bs)
+	return util.Success(c, bs, nil)
+}

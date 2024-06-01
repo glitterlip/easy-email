@@ -1,6 +1,7 @@
 import {create} from "zustand";
 import {request} from "@@/plugin-request";
 import {RawGolangTime} from "@/stores/app";
+import {IBlockData} from "easy-email-core";
 
 export interface Template {
     id: number;
@@ -38,6 +39,14 @@ export interface Share {
     verifiedPassword?: string | null;
 }
 
+export interface CustomBlock {
+    type: string,
+    title: string,
+    description: string,
+    thumbnail: string,
+    payload: Partial<IBlockData>
+}
+
 export interface EmailState {
     emailsPage: 1;
     templatesPage: 1;
@@ -62,6 +71,8 @@ export interface EmailState {
     setSharesDrawer: (show: boolean) => void;
     sharedTemplate: null | Share;
     setSharedTemplate: (share: null | Share) => void;
+    blocks: Array<CustomBlock>;
+    getBlocks: () => Promise<Array<CustomBlock>>;
 }
 
 export const useEmailStore = create<EmailState>()((set, get, store) => ({
@@ -108,6 +119,20 @@ export const useEmailStore = create<EmailState>()((set, get, store) => ({
         sharesDrawer: false,
         setSharesDrawer: (show: boolean) => {
             set({sharesDrawer: show})
+        },
+        blocks: [],
+        getBlocks: async () => {
+            const {data: blocks} = await request('/email/blocks');
+            set({
+                blocks: blocks.map(b => {
+                    return {
+                        ...b.meta,
+                        type: b.content.type,
+                        payload: b.content
+                    }
+                })
+            })
+            return blocks;
         }
     }
 ));

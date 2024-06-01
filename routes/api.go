@@ -25,6 +25,8 @@ func ApiRoute(e *echo.Echo) {
 	email.POST("/templates/:id", controllers.Update, middlewares.Auth)
 	email.POST("/send", controllers.Send, middlewares.Auth)
 	email.POST("/html", controllers.ToHtml, middlewares.Auth)
+	email.POST("/block", controllers.CreateBlock, middlewares.Auth)
+	email.GET("/blocks", controllers.Blocks, middlewares.Auth)
 
 	storage := apiRoute.Group("/file")
 	storage.POST("/upload", controllers.Upload, middlewares.Auth)

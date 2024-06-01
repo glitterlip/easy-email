@@ -4,6 +4,7 @@ import React, {useMemo, useState} from 'react';
 import {getIconNameByBlockType, useExtensionProps} from "easy-email-extensions";
 import {Collapse, Typography} from "antd";
 import {CaretRightOutlined, CaretUpOutlined} from "@ant-design/icons";
+
 const Blocks = () => {
     const {categories} = useExtensionProps();
 
@@ -54,24 +55,29 @@ const Blocks = () => {
     )
 }
 
-function BlockItem({type, payload, title, filterType,}: {
+function BlockItem(props: {
     type: string;
     payload?: Partial<IBlockData>;
     title?: string;
     filterType: string | undefined;
+    description?: string
 }) {
+    const {type, payload, title, filterType} = props
     const block = BlockManager.getBlockByType(type);
 
     return (
         <div>
             <BlockAvatarWrapper type={type} payload={payload}>
-                <div className={'flex justify-center'}>
+                <div className={'flex flex-col justify-center items-center py-8 shadow-xl'}>
                     <IconFont
                         style={{fontSize: 20}}
                         iconName={getIconNameByBlockType(type)}
                     />
                     <Typography.Text style={{marginTop: 10}}>
                         {title || block?.name}
+                    </Typography.Text>
+                    <Typography.Text>
+                        {props.description}
                     </Typography.Text>
                 </div>
             </BlockAvatarWrapper>

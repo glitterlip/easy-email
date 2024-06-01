@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect} from 'react';
 import {AdvancedType, BasicType, BlockManager} from 'easy-email-core';
 import {EmailEditorProvider} from 'easy-email-editor';
 import {ExtensionProps} from 'easy-email-extensions';
@@ -15,9 +15,8 @@ import CompareModal from "@/pages/email/editor/compareModal";
 import {CustomLayout} from "@/pages/email/editor/components/CustomLayout";
 import {db} from "@/stores/db";
 import _ from 'lodash'
-import {SaveEmailCloud, UploadEmailImage} from "@/services/email/emailService";
+import {CreateBlock, SaveEmailCloud, UploadEmailImage} from "@/services/email/emailService";
 import TemplateLoading from "@/pages/email/editor/components/TemplateLoading";
-import {Loading} from "react-daisyui";
 
 const Editor = () => {
     const emailStore = useEmailStore();
@@ -37,8 +36,78 @@ const Editor = () => {
     const closeComparingModal = () => {
         emailStore.setComparing([])
     }
-
-
+    useEffect(() => {
+        emailStore.getBlocks()
+    }, [])
+    // @ts-ignore
+    const categories: ExtensionProps['categories'] = [
+        {
+            label: 'Content',
+            active: true,
+            blocks: [
+                {
+                    type: AdvancedType.TEXT,
+                },
+                {
+                    type: AdvancedType.IMAGE,
+                    payload: {attributes: {padding: '0px 0px 0px 0px'}},
+                },
+                {
+                    type: AdvancedType.BUTTON,
+                },
+                {
+                    type: AdvancedType.SOCIAL,
+                },
+                {
+                    type: AdvancedType.DIVIDER,
+                },
+                {
+                    type: AdvancedType.SPACER,
+                },
+                {
+                    type: AdvancedType.HERO,
+                },
+                {
+                    type: AdvancedType.WRAPPER,
+                },
+            ],
+        },
+        {
+            label: 'Layout',
+            active: true,
+            displayType: 'column',
+            blocks: [
+                {
+                    title: '2 columns',
+                    payload: [
+                        ['50%', '50%'],
+                        ['33%', '67%'],
+                        ['67%', '33%'],
+                        ['25%', '75%'],
+                        ['75%', '25%'],
+                    ],
+                },
+                {
+                    title: '3 columns',
+                    payload: [
+                        ['33.33%', '33.33%', '33.33%'],
+                        ['25%', '25%', '50%'],
+                        ['50%', '25%', '25%'],
+                    ],
+                },
+                {
+                    title: '4 columns',
+                    payload: [['25%', '25%', '25%', '25%']],
+                },
+            ],
+        },
+        {
+            label: 'Custome Blocks',
+            active: true,
+            displayType: 'widget',
+            blocks: emailStore.blocks ? emailStore.blocks : []
+        }
+    ];
     if (!emailStore.email) {
         return <TemplateLoading/>
     }
@@ -58,6 +127,7 @@ const Editor = () => {
                 dashed={false}
                 onSubmit={SaveEmailCloud}
                 onUploadImage={UploadEmailImage}
+                onAddCollection={CreateBlock}
             >
                 {(p, {submit}) => {
 
@@ -90,67 +160,5 @@ const Editor = () => {
     );
 }
 
-export const categories: ExtensionProps['categories'] = [
-    {
-        label: 'Content',
-        active: true,
-        blocks: [
-            {
-                type: AdvancedType.TEXT,
-            },
-            {
-                type: AdvancedType.IMAGE,
-                payload: {attributes: {padding: '0px 0px 0px 0px'}},
-            },
-            {
-                type: AdvancedType.BUTTON,
-            },
-            {
-                type: AdvancedType.SOCIAL,
-            },
-            {
-                type: AdvancedType.DIVIDER,
-            },
-            {
-                type: AdvancedType.SPACER,
-            },
-            {
-                type: AdvancedType.HERO,
-            },
-            {
-                type: AdvancedType.WRAPPER,
-            },
-        ],
-    },
-    {
-        label: 'Layout',
-        active: true,
-        displayType: 'column',
-        blocks: [
-            {
-                title: '2 columns',
-                payload: [
-                    ['50%', '50%'],
-                    ['33%', '67%'],
-                    ['67%', '33%'],
-                    ['25%', '75%'],
-                    ['75%', '25%'],
-                ],
-            },
-            {
-                title: '3 columns',
-                payload: [
-                    ['33.33%', '33.33%', '33.33%'],
-                    ['25%', '25%', '50%'],
-                    ['50%', '25%', '25%'],
-                ],
-            },
-            {
-                title: '4 columns',
-                payload: [['25%', '25%', '25%', '25%']],
-            },
-        ],
-    },
-];
 
 export default Editor;
