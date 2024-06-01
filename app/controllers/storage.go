@@ -48,8 +48,9 @@ func Upload(c echo.Context) error {
 	}
 	defer src.Close()
 
+	id := cast.ToInt(c.Get("id"))
 	filename := fmt.Sprintf("%d-%d%s", c.Get("id"), time.Now().UnixMilli(), filepath.Ext(file.Filename))
-	p := fmt.Sprintf("%s/%s/%s/%s", time.Now().Format("20060102"), cast.ToString(c.Get("id")), c.FormValue("type"), filename)
+	p := fmt.Sprintf("%03d/%03d/%03d/%s/%s/%s", id/1000000, (id/1000)%1000, id%1000, time.Now().Format("20060102"), c.FormValue("type"), filename)
 
 	_, err = client.PutObject(context.TODO(), &s3.PutObjectInput{
 		Bucket: aws.String(bucketName),
