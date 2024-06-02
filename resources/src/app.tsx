@@ -131,6 +131,6 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
 export const request: RequestConfig = {
     timeout: 10000,
     dataField: '',
-    baseURL: 'http://127.0.0.1:1323/api',
+    baseURL: REACT_APP_ENV == 'dev' ? 'http://127.0.0.1:1323/api' : 'https://xmaildesk.com/api',
     ...errorConfig,
 };
