@@ -38,10 +38,10 @@ const links = [
   },
 ];
 const PageHeaderContent: FC<{
-  currentUser: Partial<CurrentUser>;
-}> = ({ currentUser }) => {
+    user: Partial<CurrentUser>;
+}> = ({ user }) => {
   const { styles } = useStyles();
-  const loading = currentUser && Object.keys(currentUser).length;
+  const loading = user && Object.keys(user).length;
   if (!loading) {
     return (
       <Skeleton
@@ -56,16 +56,16 @@ const PageHeaderContent: FC<{
   return (
     <div className={styles.pageHeaderContent}>
       <div className={styles.avatar}>
-        <Avatar size="large" src={currentUser.avatar} />
+        <Avatar size="large" src={user.avatar} />
       </div>
       <div className={styles.content}>
         <div className={styles.contentTitle}>
           早安，
-          {currentUser.name}
+          {user.name}
           ，祝你开心每一天！
         </div>
         <div>
-          {currentUser.title} |{currentUser.group}
+          {user.title} |{user.group}
         </div>
       </div>
     </div>
@@ -129,7 +129,7 @@ const Workplace: FC = () => {
     <PageContainer
       content={
         <PageHeaderContent
-          currentUser={{
+          user={{
             avatar: 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
             name: '吴彦祖',
             userid: '00000001',

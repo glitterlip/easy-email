@@ -62,6 +62,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
         onPageChange: () => {
             const {location} = history;
             // 如果没有登录，重定向到 login
+            console.log(initialState)
             if (!initialState?.user && !guestPaths.includes(location.pathname)) {
                 history.push(loginPath);
             }

@@ -42,13 +42,13 @@ const BaseView: React.FC = () => {
       </Upload>
     </>
   );
-  const { data: currentUser, loading } = useRequest(() => {
+  const { data: user, loading } = useRequest(() => {
     return queryCurrent();
   });
   const getAvatarURL = () => {
-    if (currentUser) {
-      if (currentUser.avatar) {
-        return currentUser.avatar;
+    if (user) {
+      if (user.avatar) {
+        return user.avatar;
       }
       const url = 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png';
       return url;
@@ -73,8 +73,8 @@ const BaseView: React.FC = () => {
                 render: (_, dom) => dom[1],
               }}
               initialValues={{
-                ...currentUser,
-                phone: currentUser?.phone.split('-'),
+                ...user,
+                phone: user?.phone.split('-'),
               }}
               hideRequiredMark
             >

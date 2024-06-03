@@ -127,7 +127,7 @@ const Center: React.FC = () => {
   const [tabKey, setTabKey] = useState<tabKeyType>('articles');
 
   //  获取用户信息
-  const { data: currentUser, loading } = useRequest(() => {
+  const { data: user, loading } = useRequest(() => {
     return queryCurrent();
   });
 
@@ -204,16 +204,16 @@ const Center: React.FC = () => {
             }}
             loading={loading}
           >
-            {!loading && currentUser && (
+            {!loading && user && (
               <div>
                 <div className={styles.avatarHolder}>
-                  <img alt="" src={currentUser.avatar} />
-                  <div className={styles.name}>{currentUser.name}</div>
-                  <div>{currentUser?.signature}</div>
+                  <img alt="" src={user.avatar} />
+                  <div className={styles.name}>{user.name}</div>
+                  <div>{user?.signature}</div>
                 </div>
-                {renderUserInfo(currentUser)}
+                {renderUserInfo(user)}
                 <Divider dashed />
-                <TagList tags={currentUser.tags || []} />
+                <TagList tags={user.tags || []} />
                 <Divider
                   style={{
                     marginTop: 16,
@@ -223,8 +223,8 @@ const Center: React.FC = () => {
                 <div className={styles.team}>
                   <div className={styles.teamTitle}>团队</div>
                   <Row gutter={36}>
-                    {currentUser.notice &&
-                      currentUser.notice.map((item) => (
+                    {user.notice &&
+                      user.notice.map((item) => (
                         <Col key={item.id} lg={24} xl={12}>
                           <a href={item.href}>
                             <Avatar size="small" src={item.logo} />

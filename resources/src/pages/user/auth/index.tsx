@@ -3,7 +3,7 @@ import {login} from '@/services/ant-design-pro/api';
 import {GithubOutlined, GoogleOutlined, LockOutlined, UserOutlined,} from '@ant-design/icons';
 import {LoginForm, ProFormCheckbox, ProFormText,} from '@ant-design/pro-components';
 import {FormattedMessage, Helmet, history, request, useModel} from '@umijs/max';
-import {Tabs} from 'antd';
+import {message, Tabs} from 'antd';
 import {createStyles} from 'antd-style';
 import React, {useEffect, useState} from 'react';
 import Settings from '../../../../config/defaultSettings';
@@ -75,7 +75,7 @@ const Login: React.FC = () => {
             if (r && r.user) {
                 setInitialState((s) => ({
                     ...s,
-                    currentUser: r.user,
+                    user: r.user,
                 }));
 
                 // history.push('/email/templates')
@@ -87,16 +87,15 @@ const Login: React.FC = () => {
     const handleSubmit = async (values: { email: string, password: string }) => {
         authAsync(values).then((res) => {
             if (res.success) {
+                message.success(`${type} success`)
                 localStorage.setItem('token', res.meta.token)
                 initialState.fetchUserInfo().then(r => {
                     setInitialState((s) => ({
                         ...s,
-                        currentUser: r.user,
+                        user: r.user,
                     }));
                     history.push('/email/templates')
                 })
-
-
             }
         })
     };
