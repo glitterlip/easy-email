@@ -83,6 +83,11 @@ const Login: React.FC = () => {
         })
     }, [])
 
+    useEffect(() => {
+        if (initialState && initialState.user && initialState.user.id) {
+            history.push('/email/templates')
+        }
+    }, [initialState?.user?.id])
 
     const handleSubmit = async (values: { email: string, password: string }) => {
         authAsync(values).then((res) => {
@@ -94,7 +99,6 @@ const Login: React.FC = () => {
                         ...s,
                         user: r.user,
                     }));
-                    history.push('/email/templates')
                 })
             }
         })
