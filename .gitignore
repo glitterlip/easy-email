@@ -1,3 +1,6 @@
 .idea
 ./resources/node_modules
 ./config/app.yaml
+./resources/dist
+./build.sh
+./easyemail*

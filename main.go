@@ -3,6 +3,7 @@ package main
 import (
 	"easyemail/app/models"
 	"easyemail/routes"
+	"embed"
 	"fmt"
 	"github.com/glitterlip/goeloquent"
 	"github.com/labstack/echo/v4"
@@ -13,10 +14,16 @@ import (
 	"strings"
 )
 
+var (
+	//go:embed resources/dist
+	dist embed.FS
+)
+
 func main() {
 
 	// read config
 	viper.AddConfigPath("./config")
+	viper.AddConfigPath("./")
 	viper.SetConfigType("yaml")
 	viper.SetConfigName("app")
 	err := viper.ReadInConfig()
@@ -65,6 +72,11 @@ func main() {
 		},
 	}))
 	routes.ApiRoute(E)
+	E.Use(middleware.StaticWithConfig(middleware.StaticConfig{
+		HTML5:      true,
+		Root:       "resources/dist",
+		Filesystem: http.FS(dist),
+	}))
 
 	E.Logger.Fatal(E.Start(":1323"))
 
