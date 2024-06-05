@@ -44,7 +44,7 @@ const Emails = ({type}: { type: 'system' | 'user' }) => {
         }).then(r => {
             history.push('/email/editor?id=' + r.meta.id)
         })
-    }, [template])
+    }, [template,name])
     return <div>
         <Modal open={type == 'system' && !!template}>
             <Modal.Header className="font-bold">Hold on</Modal.Header>
