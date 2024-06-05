@@ -124,7 +124,7 @@ export const useEmailStore = create<EmailState>()((set, get, store) => ({
         getBlocks: async () => {
             const {data: blocks} = await request('/email/blocks');
             set({
-                blocks: blocks.map(b => {
+                blocks: (blocks || []).map(b => {
                     return {
                         ...b.meta,
                         type: b.content.type,
