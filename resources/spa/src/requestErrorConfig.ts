@@ -3,6 +3,7 @@ import {history} from '@umijs/max'
 import {AxiosResponse} from "axios";
 import {ApiResponse, ErrorShowType} from "@/types/api/general";
 import {message, notification} from "antd";
+import {GuestPaths} from "../config/routes";
 
 export enum ErrorCode {
 
@@ -36,7 +37,9 @@ export const errorConfig: RequestConfig = {
                 const {success, data, errorCode, errorMessage, showType, traceId, meta} = response.data;
                 if (!success) {
                     if (errorCode === ErrorCode.Unauthorized) {
-                        history.push('/auth/login')
+                        if (!GuestPaths.includes(window.location.pathname)) {
+                            history.push('/auth/login')
+                        }
                     }
                     if (config.skipErrorHandler) throw response;
                     switch (showType) {

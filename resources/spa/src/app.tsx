@@ -8,10 +8,9 @@ import defaultSettings from '../config/defaultSettings';
 import {errorConfig} from './requestErrorConfig';
 import {user} from './services/ant-design-pro/api';
 import {useAppStore, User} from "@/stores/app";
-
+import {GuestPaths} from '../config/routes'
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/auth/login';
-const guestPaths = ['/email/editor', '/auth/login', '/auth/register'];
 
 /**
  * @see  https://umijs.org/zh-CN/plugins/plugin-initial-state
@@ -37,7 +36,7 @@ export async function getInitialState(): Promise<{
     };
     const {location} = history;
 
-    if ([loginPath, ...guestPaths].includes(location.pathname)) {
+    if ([loginPath, ...GuestPaths].includes(location.pathname)) {
 
         return {
             fetchUserInfo,
@@ -63,7 +62,7 @@ export const layout: RunTimeLayoutConfig = ({initialState, setInitialState}) => 
             const {location} = history;
             // 如果没有登录，重定向到 login
             console.log(initialState)
-            if (!initialState?.user && !guestPaths.includes(location.pathname)) {
+            if (!initialState?.user && !GuestPaths.includes(location.pathname)) {
                 history.push(loginPath);
             }
         },

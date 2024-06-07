@@ -17,10 +17,13 @@ import {db} from "@/stores/db";
 import _ from 'lodash'
 import {CreateBlock, SaveEmailCloud, UploadEmailImage} from "@/services/email/emailService";
 import TemplateLoading from "@/pages/email/editor/components/TemplateLoading";
+import {useAppStore} from "@/stores/app";
 
 const Editor = () => {
     const emailStore = useEmailStore();
     const [searchParams, setSearchParams] = useSearchParams()
+    const user = useAppStore(s => s.user)
+    const authorized = !!user
 
     useEffect(() => {
         if (searchParams.get('id')) {
@@ -125,7 +128,9 @@ const Editor = () => {
                 height={'calc(100vh - 115px)'}
                 autoComplete
                 dashed={false}
-                onSubmit={SaveEmailCloud}
+                onSubmit={authorized ? SaveEmailCloud : () => {
+                    message.error('please login first')
+                }}
                 onUploadImage={UploadEmailImage}
                 onAddCollection={CreateBlock}
             >

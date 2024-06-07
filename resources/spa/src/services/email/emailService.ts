@@ -2,9 +2,15 @@ import {request} from "@@/plugin-request";
 import {message} from "antd";
 import {useEmailStore} from "@/stores/email";
 import {CollectedBlock, IEmailTemplate} from "easy-email-editor";
+import {CheckLogin} from "@/services/app/appService";
 
 export const SaveEmailCloud = (vs: IEmailTemplate) => {
     const state = useEmailStore.getState()
+
+    if (!CheckLogin()) {
+        message.error('You need login to continue')
+        return
+    }
     request('/email/templates/' + state.email?.id, {
         method: 'POST',
         data: {
@@ -22,6 +28,10 @@ export const SaveEmailCloud = (vs: IEmailTemplate) => {
 }
 
 export const UploadEmailImage = async (file: Blob) => {
+    if (!CheckLogin()) {
+        message.error('You need login to continue')
+        return
+    }
     let data = new FormData()
     data.append('file', file)
     data.append("type", "email")
@@ -38,6 +48,10 @@ export const UploadEmailImage = async (file: Blob) => {
 }
 
 export const CreateBlock = async (block: CollectedBlock) => {
+    if (!CheckLogin()) {
+        message.error('You need login to continue')
+        return
+    }
     request('/email/block', {
         method: 'POST',
         data: {

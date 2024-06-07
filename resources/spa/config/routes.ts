@@ -49,3 +49,4 @@ export default [
         path: '',
     },
 ];
+export const GuestPaths = ['/email/editor', '/auth/login', '/auth/register'];
